@@ -27,16 +27,13 @@ class Day04(input: List<String>) {
         .map { it.matchingNumbers }
         .sumOf { if (it == 0) 0 else 2.pow(it - 1) }
 
-    fun solvePart2(): Int {
-        val counts = scratchcards.map { 1 }.toMutableList()
-        for (i in scratchcards.indices) {
-            for (j in 0 until counts[i]) {
-                for (k in 0 until scratchcards[i].matchingNumbers) {
-                    counts[i + 1 + k]++
+    fun solvePart2() = MutableList(scratchcards.size) { 1 }
+        .apply {
+            scratchcards.map { it.matchingNumbers }.forEachIndexed { i, matches ->
+                for (j in 0 until matches) {
+                    this[i + j + 1] += this[i]
                 }
             }
         }
-
-        return counts.sum()
-    }
+        .sum()
 }
