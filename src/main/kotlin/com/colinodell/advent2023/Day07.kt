@@ -31,18 +31,18 @@ class Day07(private val input: List<String>) {
             // Convert to a string representation for easy comparison
             .joinToString { it.toString() }
 
-        private fun cardValue(card: Char) = when (card) {
-            joker -> 0
-            'T' -> 10
-            'J' -> 11
-            'Q' -> 12
-            'K' -> 13
-            'A' -> 14
-            else -> card.toString().toInt()
-        }
-
         // The values of each card, used as a tie-breaker when putting hands in order of strength
-        private val cardValues = cards.map { cardValue(it) }
+        private val cardValues = cards.map {
+            when (it) {
+                joker -> 1
+                'T' -> 10
+                'J' -> 11
+                'Q' -> 12
+                'K' -> 13
+                'A' -> 14
+                else -> it.toString().toInt()
+            }
+        }
 
         // Compare by strength, then by card values
         override fun compareTo(other: Hand) = when (val c = strength.compareTo(other.strength)) {
