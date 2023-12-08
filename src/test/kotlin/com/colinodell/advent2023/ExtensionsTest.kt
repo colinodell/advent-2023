@@ -50,4 +50,30 @@ class ExtensionsTest {
             Assertions.assertThat(listOf(1, 3, 3).compareTo(listOf(1, 2, 3))).isEqualTo(1)
         }
     }
+
+    @Nested
+    inner class SequenceTests {
+        @Test
+        fun `asRepeatedSequence() repeats the original sequence indefinitely`() {
+            Assertions.assertThat(listOf(1, 2, 3).asRepeatedSequence().take(10).toList()).containsExactly(1, 2, 3, 1, 2, 3, 1, 2, 3, 1)
+        }
+    }
+
+    @Nested
+    inner class LCMGCDTests {
+        @Test
+        fun gcd() {
+            Assertions.assertThat(12L.gcd(18L)).isEqualTo(6)
+        }
+
+        @Test
+        fun lcm() {
+            Assertions.assertThat(12L.lcm(18L)).isEqualTo(36)
+        }
+
+        @Test
+        fun `Collection lcm()`() {
+            Assertions.assertThat(listOf(12L, 18L, 24L).lcm()).isEqualTo(72)
+        }
+    }
 }

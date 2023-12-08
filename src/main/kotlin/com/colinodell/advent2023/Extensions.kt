@@ -17,6 +17,25 @@ inline fun <T> Iterable<T>.productOf(predicate: (T) -> Long): Long = fold(1L) { 
 fun Int.clamp(min: Int, max: Int) = maxOf(min, minOf(max, this))
 fun Int.pow(n: Int) = toDouble().pow(n).toInt()
 
+fun Long.gcd(other: Long): Long {
+    var a = this
+    var b = other
+    while (b != 0L) {
+        val temp = b
+        b = a % b
+        a = temp
+    }
+    return a
+}
+fun Long.lcm(other: Long) = (this * other) / gcd(other)
+fun Collection<Long>.lcm(): Long {
+    return when (this.size) {
+        1 -> this.first()
+        2 -> this.first().lcm(this.last())
+        else -> this.first().lcm(this.drop(1).lcm())
+    }
+}
+
 operator fun LongRange.plus(offset: Long): LongRange {
     return (first + offset)..(last + offset)
 }
@@ -44,3 +63,5 @@ fun <T : Comparable<T>> Iterable<T>.compareTo(other: Iterable<T>): Int {
     // they're the same
     return 0
 }
+
+fun <T> List<T>.asRepeatedSequence() = generateSequence(0) { (it + 1) % this.size }.map(::get)
