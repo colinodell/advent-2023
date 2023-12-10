@@ -40,6 +40,14 @@ data class Vector2(val x: Int, val y: Int) {
 
     fun withX(x: Int) = Vector2(x, y)
     fun withY(y: Int) = Vector2(x, y)
+
+    fun directionTo(other: Vector2) = when ((other - this).normalize()) {
+        Vector2(0, -1) -> Direction.UP
+        Vector2(0, 1) -> Direction.DOWN
+        Vector2(-1, 0) -> Direction.LEFT
+        Vector2(1, 0) -> Direction.RIGHT
+        else -> null
+    }
 }
 
 enum class Direction {

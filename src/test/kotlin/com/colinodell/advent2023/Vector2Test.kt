@@ -133,6 +133,15 @@ class Vector2Test {
             Vector2(1, 1),
         )
     }
+
+    @Test
+    fun `Direction To`() {
+        assertThat(Vector2(0, 0).directionTo(Vector2(0, -1))).isEqualTo(Direction.UP)
+        assertThat(Vector2(0, 0).directionTo(Vector2(0, 1))).isEqualTo(Direction.DOWN)
+        assertThat(Vector2(0, 0).directionTo(Vector2(-1, 0))).isEqualTo(Direction.LEFT)
+        assertThat(Vector2(0, 0).directionTo(Vector2(1, 0))).isEqualTo(Direction.RIGHT)
+        assertThat(Vector2(0, 0).directionTo(Vector2(1, 1))).isNull()
+    }
 }
 
 @Nested
