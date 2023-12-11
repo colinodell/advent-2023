@@ -5,7 +5,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 
-@DisplayName("Day 8: Haunted Wasteland")
+@DisplayName("Day 10: Pipe Maze")
 class Day10Test {
     private val part1example1 = inputAsListOfString("day10_part1_example1.txt").toGrid()
     private val part1example2 = inputAsListOfString("day10_part1_example2.txt").toGrid()
