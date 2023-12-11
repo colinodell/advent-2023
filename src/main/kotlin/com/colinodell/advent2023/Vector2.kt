@@ -150,6 +150,8 @@ fun <T> Grid<T>.bottomRight() = Vector2(keys.maxOf { it.x }, keys.maxOf { it.y }
 fun <T> Grid<T>.region() = Region(topLeft(), bottomRight())
 fun <T> Grid<T>.width() = keys.maxOf { it.x } - keys.minOf { it.x } + 1
 fun <T> Grid<T>.height() = keys.maxOf { it.y } - keys.minOf { it.y } + 1
+fun <T> Grid<T>.rows() = keys.minOf { it.y } .. keys.maxOf { it.y }
+fun <T> Grid<T>.cols() = keys.minOf { it.x } .. keys.maxOf { it.x }
 
 fun Collection<Vector2>.width() = maxOf { it.x } - minOf { it.x } + 1
 fun Collection<Vector2>.height() = maxOf { it.y } - minOf { it.y } + 1
@@ -184,15 +186,15 @@ fun <T> Grid<T>.toStringVisualization(): String {
     return grid.joinToString("\n") { it.joinToString("") }
 }
 
-fun <T> List<String>.toGrid(transform: (Char) -> T) = mutableMapOf<Vector2, T>().apply {
+fun <T> List<String>.toGrid(ignore: Char? = null, transform: (Char) -> T) = mutableMapOf<Vector2, T>().apply {
     forEachIndexed { y, line ->
         line.forEachIndexed { x, c ->
-            put(Vector2(x, y), transform(c))
+            if (c != ignore) put(Vector2(x, y), transform(c))
         }
     }
 }
 
-fun List<String>.toGrid() = toGrid { it }
+fun List<String>.toGrid(ignore: Char? = null) = toGrid(ignore) { it }
 
 fun <T> Iterable<Vector2>.toGrid(valueGenerator: (Vector2) -> T) = mutableMapOf<Vector2, T>().apply {
     forEachIndexed { _, v ->
