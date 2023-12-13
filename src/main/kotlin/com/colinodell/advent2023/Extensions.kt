@@ -12,6 +12,8 @@ fun <T> Iterable<T>.chunkedBy(separator: (T) -> Boolean): List<List<T>> =
         acc
     }
 
+fun <T> T?.default(default: T) = this ?: default
+
 inline fun <T> Iterable<T>.productOf(predicate: (T) -> Long): Long = fold(1L) { acc, t -> acc * predicate(t) }
 
 fun Int.clamp(min: Int, max: Int) = maxOf(min, minOf(max, this))
