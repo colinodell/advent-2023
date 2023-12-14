@@ -42,26 +42,26 @@ data class Vector2(val x: Int, val y: Int) {
     fun withY(y: Int) = Vector2(x, y)
 
     fun directionTo(other: Vector2) = when ((other - this).normalize()) {
-        Vector2(0, -1) -> Direction.UP
-        Vector2(0, 1) -> Direction.DOWN
-        Vector2(-1, 0) -> Direction.LEFT
-        Vector2(1, 0) -> Direction.RIGHT
+        Vector2(0, -1) -> Direction.NORTH
+        Vector2(0, 1) -> Direction.SOUTH
+        Vector2(-1, 0) -> Direction.WEST
+        Vector2(1, 0) -> Direction.EAST
         else -> null
     }
 }
 
 enum class Direction {
-    UP, DOWN, LEFT, RIGHT;
+    NORTH, SOUTH, WEST, EAST;
 
     enum class Rotation {
         LEFT, RIGHT
     }
 
     fun vector() = when (this) {
-        UP -> Vector2(0, -1)
-        DOWN -> Vector2(0, 1)
-        LEFT -> Vector2(-1, 0)
-        RIGHT -> Vector2(1, 0)
+        NORTH -> Vector2(0, -1)
+        SOUTH -> Vector2(0, 1)
+        WEST -> Vector2(-1, 0)
+        EAST -> Vector2(1, 0)
     }
 
     fun turn(rotation: Rotation) = when (rotation) {
@@ -70,32 +70,32 @@ enum class Direction {
     }
 
     fun turnLeft() = when (this) {
-        UP -> LEFT
-        DOWN -> RIGHT
-        LEFT -> DOWN
-        RIGHT -> UP
+        NORTH -> WEST
+        SOUTH -> EAST
+        WEST -> SOUTH
+        EAST -> NORTH
     }
 
     fun turnRight() = when (this) {
-        UP -> RIGHT
-        DOWN -> LEFT
-        LEFT -> UP
-        RIGHT -> DOWN
+        NORTH -> EAST
+        SOUTH -> WEST
+        WEST -> NORTH
+        EAST -> SOUTH
     }
 
     fun opposite() = when (this) {
-        UP -> DOWN
-        DOWN -> UP
-        LEFT -> RIGHT
-        RIGHT -> LEFT
+        NORTH -> SOUTH
+        SOUTH -> NORTH
+        WEST -> EAST
+        EAST -> WEST
     }
 
     companion object {
         fun from(c: Char): Direction = when (c) {
-            '^' -> UP
-            'v' -> DOWN
-            '<' -> LEFT
-            '>' -> RIGHT
+            '^' -> NORTH
+            'v' -> SOUTH
+            '<' -> WEST
+            '>' -> EAST
             else -> throw IllegalArgumentException("Unknown direction: $c")
         }
     }

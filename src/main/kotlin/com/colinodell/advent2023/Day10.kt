@@ -5,12 +5,12 @@ class Day10(private val tiles: Grid<Char>) {
 
     private val pipeEntrances = mapOf(
         // Directions below are the direction you can enter the pipe from
-        '|' to setOf(Direction.UP, Direction.DOWN),
-        '-' to setOf(Direction.LEFT, Direction.RIGHT),
-        'L' to setOf(Direction.DOWN, Direction.LEFT),
-        'J' to setOf(Direction.DOWN, Direction.RIGHT),
-        '7' to setOf(Direction.UP, Direction.RIGHT),
-        'F' to setOf(Direction.UP, Direction.LEFT),
+        '|' to setOf(Direction.NORTH, Direction.SOUTH),
+        '-' to setOf(Direction.WEST, Direction.EAST),
+        'L' to setOf(Direction.SOUTH, Direction.WEST),
+        'J' to setOf(Direction.SOUTH, Direction.EAST),
+        '7' to setOf(Direction.NORTH, Direction.EAST),
+        'F' to setOf(Direction.NORTH, Direction.WEST),
     )
 
     private fun canEnter(from: Vector2, to: Vector2): Boolean {

@@ -136,10 +136,10 @@ class Vector2Test {
 
     @Test
     fun `Direction To`() {
-        assertThat(Vector2(0, 0).directionTo(Vector2(0, -1))).isEqualTo(Direction.UP)
-        assertThat(Vector2(0, 0).directionTo(Vector2(0, 1))).isEqualTo(Direction.DOWN)
-        assertThat(Vector2(0, 0).directionTo(Vector2(-1, 0))).isEqualTo(Direction.LEFT)
-        assertThat(Vector2(0, 0).directionTo(Vector2(1, 0))).isEqualTo(Direction.RIGHT)
+        assertThat(Vector2(0, 0).directionTo(Vector2(0, -1))).isEqualTo(Direction.NORTH)
+        assertThat(Vector2(0, 0).directionTo(Vector2(0, 1))).isEqualTo(Direction.SOUTH)
+        assertThat(Vector2(0, 0).directionTo(Vector2(-1, 0))).isEqualTo(Direction.WEST)
+        assertThat(Vector2(0, 0).directionTo(Vector2(1, 0))).isEqualTo(Direction.EAST)
         assertThat(Vector2(0, 0).directionTo(Vector2(1, 1))).isNull()
     }
 }
@@ -149,54 +149,54 @@ class Vector2Test {
 class DirectionTest {
     @Test
     fun `Turn`() {
-        assertThat(Direction.UP.turn(Direction.Rotation.RIGHT)).isEqualTo(Direction.RIGHT)
-        assertThat(Direction.UP.turn(Direction.Rotation.LEFT)).isEqualTo(Direction.LEFT)
-        assertThat(Direction.RIGHT.turn(Direction.Rotation.RIGHT)).isEqualTo(Direction.DOWN)
-        assertThat(Direction.RIGHT.turn(Direction.Rotation.LEFT)).isEqualTo(Direction.UP)
-        assertThat(Direction.DOWN.turn(Direction.Rotation.RIGHT)).isEqualTo(Direction.LEFT)
-        assertThat(Direction.DOWN.turn(Direction.Rotation.LEFT)).isEqualTo(Direction.RIGHT)
-        assertThat(Direction.LEFT.turn(Direction.Rotation.RIGHT)).isEqualTo(Direction.UP)
-        assertThat(Direction.LEFT.turn(Direction.Rotation.LEFT)).isEqualTo(Direction.DOWN)
+        assertThat(Direction.NORTH.turn(Direction.Rotation.RIGHT)).isEqualTo(Direction.EAST)
+        assertThat(Direction.NORTH.turn(Direction.Rotation.LEFT)).isEqualTo(Direction.WEST)
+        assertThat(Direction.EAST.turn(Direction.Rotation.RIGHT)).isEqualTo(Direction.SOUTH)
+        assertThat(Direction.EAST.turn(Direction.Rotation.LEFT)).isEqualTo(Direction.NORTH)
+        assertThat(Direction.SOUTH.turn(Direction.Rotation.RIGHT)).isEqualTo(Direction.WEST)
+        assertThat(Direction.SOUTH.turn(Direction.Rotation.LEFT)).isEqualTo(Direction.EAST)
+        assertThat(Direction.WEST.turn(Direction.Rotation.RIGHT)).isEqualTo(Direction.NORTH)
+        assertThat(Direction.WEST.turn(Direction.Rotation.LEFT)).isEqualTo(Direction.SOUTH)
     }
 
     @Test
     fun `Turn Left`() {
-        assertThat(Direction.UP.turnLeft()).isEqualTo(Direction.LEFT)
-        assertThat(Direction.LEFT.turnLeft()).isEqualTo(Direction.DOWN)
-        assertThat(Direction.DOWN.turnLeft()).isEqualTo(Direction.RIGHT)
-        assertThat(Direction.RIGHT.turnLeft()).isEqualTo(Direction.UP)
+        assertThat(Direction.NORTH.turnLeft()).isEqualTo(Direction.WEST)
+        assertThat(Direction.WEST.turnLeft()).isEqualTo(Direction.SOUTH)
+        assertThat(Direction.SOUTH.turnLeft()).isEqualTo(Direction.EAST)
+        assertThat(Direction.EAST.turnLeft()).isEqualTo(Direction.NORTH)
     }
 
     @Test
     fun `Turn Right`() {
-        assertThat(Direction.UP.turnRight()).isEqualTo(Direction.RIGHT)
-        assertThat(Direction.RIGHT.turnRight()).isEqualTo(Direction.DOWN)
-        assertThat(Direction.DOWN.turnRight()).isEqualTo(Direction.LEFT)
-        assertThat(Direction.LEFT.turnRight()).isEqualTo(Direction.UP)
+        assertThat(Direction.NORTH.turnRight()).isEqualTo(Direction.EAST)
+        assertThat(Direction.EAST.turnRight()).isEqualTo(Direction.SOUTH)
+        assertThat(Direction.SOUTH.turnRight()).isEqualTo(Direction.WEST)
+        assertThat(Direction.WEST.turnRight()).isEqualTo(Direction.NORTH)
     }
 
     @Test
     fun `Vector`() {
-        assertThat(Direction.UP.vector()).isEqualTo(Vector2(0, -1))
-        assertThat(Direction.RIGHT.vector()).isEqualTo(Vector2(1, 0))
-        assertThat(Direction.DOWN.vector()).isEqualTo(Vector2(0, 1))
-        assertThat(Direction.LEFT.vector()).isEqualTo(Vector2(-1, 0))
+        assertThat(Direction.NORTH.vector()).isEqualTo(Vector2(0, -1))
+        assertThat(Direction.EAST.vector()).isEqualTo(Vector2(1, 0))
+        assertThat(Direction.SOUTH.vector()).isEqualTo(Vector2(0, 1))
+        assertThat(Direction.WEST.vector()).isEqualTo(Vector2(-1, 0))
     }
 
     @Test
     fun `Opposite`() {
-        assertThat(Direction.UP.opposite()).isEqualTo(Direction.DOWN)
-        assertThat(Direction.RIGHT.opposite()).isEqualTo(Direction.LEFT)
-        assertThat(Direction.DOWN.opposite()).isEqualTo(Direction.UP)
-        assertThat(Direction.LEFT.opposite()).isEqualTo(Direction.RIGHT)
+        assertThat(Direction.NORTH.opposite()).isEqualTo(Direction.SOUTH)
+        assertThat(Direction.EAST.opposite()).isEqualTo(Direction.WEST)
+        assertThat(Direction.SOUTH.opposite()).isEqualTo(Direction.NORTH)
+        assertThat(Direction.WEST.opposite()).isEqualTo(Direction.EAST)
     }
 
     @Test
     fun `From`() {
-        assertThat(Direction.from('^')).isEqualTo(Direction.UP)
-        assertThat(Direction.from('v')).isEqualTo(Direction.DOWN)
-        assertThat(Direction.from('<')).isEqualTo(Direction.LEFT)
-        assertThat(Direction.from('>')).isEqualTo(Direction.RIGHT)
+        assertThat(Direction.from('^')).isEqualTo(Direction.NORTH)
+        assertThat(Direction.from('v')).isEqualTo(Direction.SOUTH)
+        assertThat(Direction.from('<')).isEqualTo(Direction.WEST)
+        assertThat(Direction.from('>')).isEqualTo(Direction.EAST)
     }
 }
 
