@@ -126,6 +126,7 @@ data class Region(val topLeft: Vector2, val bottomRight: Vector2) {
 }
 
 typealias Grid<T> = Map<Vector2, T>
+typealias MutableGrid<T> = MutableMap<Vector2, T>
 data class GridEntry<V>(override val key: Vector2, override val value: V?) : Map.Entry<Vector2, V?>
 
 fun <T> mutableGridOf() = mutableMapOf<Vector2, T>()
