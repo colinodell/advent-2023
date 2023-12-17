@@ -90,6 +90,13 @@ enum class Direction {
         EAST -> WEST
     }
 
+    override fun toString() = when (this) {
+        NORTH -> "^"
+        SOUTH -> "v"
+        WEST -> "<"
+        EAST -> ">"
+    }
+
     companion object {
         fun from(c: Char): Direction = when (c) {
             '^' -> NORTH
