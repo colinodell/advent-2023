@@ -53,11 +53,11 @@ class Day16(input: List<String>) {
     fun solvePart1() = solve(Beam(Vector2(0, 0), Direction.EAST))
 
     fun solvePart2() = listOf(
-            (0 until grid.width()).map { x -> Beam(Vector2(x, 0), Direction.SOUTH) },
-            (0 until grid.width()).map { x -> Beam(Vector2(x, grid.height() - 1), Direction.NORTH) },
-            (0 until grid.height()).map { y -> Beam(Vector2(0, y), Direction.EAST) },
-            (0 until grid.height()).map { y -> Beam(Vector2(grid.width() - 1, y), Direction.WEST) },
-        )
+        (0 until grid.width()).map { x -> Beam(Vector2(x, 0), Direction.SOUTH) },
+        (0 until grid.width()).map { x -> Beam(Vector2(x, grid.height() - 1), Direction.NORTH) },
+        (0 until grid.height()).map { y -> Beam(Vector2(0, y), Direction.EAST) },
+        (0 until grid.height()).map { y -> Beam(Vector2(grid.width() - 1, y), Direction.WEST) },
+    )
         .flatten()
         .maxOf { solve(it) }
 }
