@@ -5,14 +5,19 @@ import kotlin.math.max
 
 data class Vector2(val x: Int, val y: Int) {
     operator fun plus(other: Vector2) = Vector2(x + other.x, y + other.y)
+    operator fun plus(other: Vector2L) = Vector2L(x + other.x, y + other.y)
 
     operator fun minus(other: Vector2) = Vector2(x - other.x, y - other.y)
+    operator fun minus(other: Vector2L) = Vector2L(x - other.x, y - other.y)
 
     operator fun times(scale: Int) = Vector2(x * scale, y * scale)
+    operator fun times(scale: Long) = Vector2L(x * scale, y * scale)
 
     operator fun div(scale: Int) = Vector2(x / scale, y / scale)
+    operator fun div(scale: Long) = Vector2L(x / scale, y / scale)
 
     operator fun rem(n: Int) = Vector2(x % n, y % n)
+    operator fun rem(n: Long) = Vector2L(x % n, y % n)
 
     fun negativeSafeModulo(n: Int) = Vector2((x + n) % n, (y + n) % n)
 
@@ -21,6 +26,8 @@ data class Vector2(val x: Int, val y: Int) {
     fun isTouching(other: Vector2) = abs(x - other.x) <= 1 && abs(y - other.y) <= 1
 
     fun manhattanDistanceTo(other: Vector2) = abs(x - other.x) + abs(y - other.y)
+
+    fun size() = abs(x) + abs(y)
 
     override fun toString() = "($x, $y)"
 
@@ -48,6 +55,25 @@ data class Vector2(val x: Int, val y: Int) {
         Vector2(1, 0) -> Direction.EAST
         else -> null
     }
+}
+
+data class Vector2L(val x: Long, val y: Long) {
+    operator fun plus(other: Vector2L) = Vector2L(x + other.x, y + other.y)
+
+    operator fun minus(other: Vector2L) = Vector2L(x - other.x, y - other.y)
+
+    operator fun times(scale: Int) = Vector2L(x * scale, y * scale)
+    operator fun times(scale: Long) = Vector2L(x * scale, y * scale)
+
+    operator fun div(scale: Int) = Vector2L(x / scale, y / scale)
+    operator fun div(scale: Long) = Vector2L(x / scale, y / scale)
+
+    operator fun rem(n: Int) = Vector2L(x % n, y % n)
+    operator fun rem(n: Long) = Vector2L(x % n, y % n)
+
+    fun size() = abs(x) + abs(y)
+
+    override fun toString() = "($x, $y)"
 }
 
 enum class Direction {
