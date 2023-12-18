@@ -99,10 +99,10 @@ enum class Direction {
 
     companion object {
         fun from(c: Char): Direction = when (c) {
-            '^' -> NORTH
-            'v' -> SOUTH
-            '<' -> WEST
-            '>' -> EAST
+            '^', 'U', 'N' -> NORTH
+            'v', 'D', 'S' -> SOUTH
+            '<', 'L', 'W' -> WEST
+            '>', 'R', 'E' -> EAST
             else -> throw IllegalArgumentException("Unknown direction: $c")
         }
     }
@@ -136,7 +136,7 @@ typealias Grid<T> = Map<Vector2, T>
 typealias MutableGrid<T> = MutableMap<Vector2, T>
 data class GridEntry<V>(override val key: Vector2, override val value: V?) : Map.Entry<Vector2, V?>
 
-fun <T> mutableGridOf() = mutableMapOf<Vector2, T>()
+fun <T> mutableGridOf(vararg pairs: Pair<Vector2, T>) = mutableMapOf(*pairs)
 
 fun <T> Grid<T>.pointsToThe(direction: Vector2, source: Vector2) = sequence {
     var current = source + direction
