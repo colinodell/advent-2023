@@ -76,4 +76,60 @@ class ExtensionsTest {
             Assertions.assertThat(listOf(12L, 18L, 24L).lcm()).isEqualTo(72)
         }
     }
+
+    @Nested
+    inner class IterableIntRangeIntersectTests {
+        @Test
+        fun `no overlap`() {
+            Assertions.assertThat(listOf(1..3, 5..7).intersect(9..10)).isEmpty()
+        }
+
+        @Test
+        fun `one exact match`() {
+            Assertions.assertThat(listOf(1..3, 5..7).intersect(1..3)).containsExactly(1..3)
+        }
+
+        @Test
+        fun `one partial match`() {
+            Assertions.assertThat(listOf(1..3, 5..7).intersect(2..3)).containsExactly(2..3)
+        }
+
+        @Test
+        fun `partial overlap one side`() {
+            Assertions.assertThat(listOf(1..3, 5..7).intersect(2..4)).containsExactly(2..3)
+        }
+
+        @Test
+        fun `partial overlap both sides`() {
+            Assertions.assertThat(listOf(1..3, 5..7).intersect(2..6)).containsExactly(2..3, 5..6)
+        }
+    }
+
+    @Nested
+    inner class IterableIntRangeSubtractTests {
+        @Test
+        fun `no overlap`() {
+            Assertions.assertThat(listOf(1..3, 5..7).subtract(9..10)).containsExactly(1..3, 5..7)
+        }
+
+        @Test
+        fun `one exact match`() {
+            Assertions.assertThat(listOf(1..3, 5..7).subtract(1..3)).containsExactly(5..7)
+        }
+
+        @Test
+        fun `one partial match`() {
+            Assertions.assertThat(listOf(1..3, 5..7).subtract(2..3)).containsExactly(1..1, 5..7)
+        }
+
+        @Test
+        fun `partial overlap one side`() {
+            Assertions.assertThat(listOf(1..3, 5..7).subtract(3..4)).containsExactly(1..2, 5..7)
+        }
+
+        @Test
+        fun `partial overlap both sides`() {
+            Assertions.assertThat(listOf(1..3, 5..7).subtract(3..5)).containsExactly(1..2, 6..7)
+        }
+    }
 }

@@ -1,5 +1,7 @@
 package com.colinodell.advent2023
 
+import kotlin.math.max
+import kotlin.math.min
 import kotlin.math.pow
 
 fun <T> Iterable<T>.chunkedBy(separator: (T) -> Boolean): List<List<T>> =
@@ -68,3 +70,34 @@ fun <T : Comparable<T>> Iterable<T>.compareTo(other: Iterable<T>): Int {
 }
 
 fun <T> List<T>.asRepeatedSequence() = generateSequence(0) { (it + 1) % this.size }.map(::get)
+
+val IntRange.size get() = endInclusive - start + 1
+
+fun Iterable<IntRange>.intersect(range: IntRange): Collection<IntRange> {
+    return buildList {
+        for (r in this@intersect) {
+            if (r.first >= range.last || r.last <= range.first) {
+                continue
+            } else {
+                add(max(r.first, range.first)..min(r.last, range.last))
+            }
+        }
+    }
+}
+
+fun Iterable<IntRange>.subtract(range: IntRange): Collection<IntRange> {
+    return buildList {
+        for (r in this@subtract) {
+            if (r.first > range.last || r.last < range.first) {
+                add(r)
+            } else {
+                if (r.first < range.first) {
+                    add(r.first until range.first)
+                }
+                if (r.last > range.last) {
+                    add(range.last + 1 until r.last + 1)
+                }
+            }
+        }
+    }
+}
