@@ -40,6 +40,8 @@ class Day20(private val input: List<String>) {
                 lastPulses[input] = Pulse.LOW
             }
 
+            fun getInputs() = lastPulses.keys
+
             override fun onReceive(p: Pulse, from: String) = lastPulses.set(from, p)
 
             override fun sendPulse(lastPulse: Pulse) = if (lastPulses.values.all { it == Pulse.HIGH }) Pulse.LOW else Pulse.HIGH
@@ -128,4 +130,33 @@ class Day20(private val input: List<String>) {
         return lowPulses * highPulses
     }
 
+    fun solvePart2(): Long {
+        val target = modules["rx"]!!
+
+        // Find the conjunction that feeds into the target
+        val conjunction = receivers
+            .filter { (_, receivers) -> target.name in receivers }
+            .map { (source, _) -> modules[source]!! }
+            .filterIsInstance<Module.Conjunction>()
+            .first()
+
+        // What are the inputs to the conjunction?
+        val inputs = conjunction.getInputs().map { modules[it]!! }
+
+        // Assume these inputs receive pulses on a cycle; find the cycle length
+        val cycleLength = inputs.associate { it.name to 0L }.toMutableMap()
+
+        var currentCycle = 0L
+        while (cycleLength.any { it.value == 0L }) {
+            currentCycle++
+
+            pressButton(onPulseSent = { module, pulse ->
+                if (module in inputs && pulse == Pulse.HIGH) {
+                    cycleLength[module.name] = currentCycle
+                }
+            })
+        }
+
+        return cycleLength.values.lcm()
+    }
 }
