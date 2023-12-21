@@ -10,10 +10,10 @@ class Day21(input: List<String>) {
     private fun get(p: Vector2) = grid[Vector2(p.x.safeMod(gridSize), p.y.safeMod(gridSize))]!!
 
     private fun generatePlotCounts() = sequence {
-        var positions = setOf(start)
+        var positions = listOf(start)
         while (true) {
             yield(positions.size)
-            positions = positions.flatMap { it.neighbors().filter { get(it) != '#' } }.toSet()
+            positions = positions.flatMap { it.neighbors() }.distinct().filter { get(it) != '#' }
         }
     }
 
