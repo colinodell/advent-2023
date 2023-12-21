@@ -21,6 +21,7 @@ inline fun <T> Iterable<T>.productOf(predicate: (T) -> Long): Long = fold(1L) { 
 fun Int.clamp(min: Int, max: Int) = maxOf(min, minOf(max, this))
 fun Long.clamp(min: Long, max: Long) = maxOf(min, minOf(max, this))
 fun Int.pow(n: Int) = toDouble().pow(n).toInt()
+fun Int.safeMod(other: Int) = ((this % other) + other) % other
 
 fun Long.gcd(other: Long): Long {
     var a = this
