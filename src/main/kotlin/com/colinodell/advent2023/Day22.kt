@@ -7,19 +7,20 @@ class Day22(input: List<String>) {
         .map { Vector3(it[0], it[1], it[2]) }
         .chunked(2)
         .map { (start, end) -> Cuboid(start, end) }
-        .let { makeThemFall(it) }
+        .let { makeThemFall(it).first }
 
     private fun isSupporting(bottom: Cuboid, top: Cuboid): Boolean {
         return bottom != top && bottom.shift(z = 1).intersects(top)
     }
 
-    private fun canDisintegrate(brick: Cuboid) = bricks
+    private fun supportsOtherBricks(brick: Cuboid) = bricks
         .filter { isSupporting(brick, it) }
-        .none { supported -> bricks.count { isSupporting(it, supported) } == 1 }
+        .any { supported -> bricks.count { isSupporting(it, supported) } == 1 }
 
-    private fun makeThemFall(bricks: List<Cuboid>): List<Cuboid> {
+    private fun makeThemFall(bricks: List<Cuboid>): Pair<List<Cuboid>, Int> {
         val next = mutableListOf<Cuboid>()
         val settled = mutableSetOf<Cuboid>()
+        var moved = 0
 
         fun hasSettled(brick: Cuboid) = brick.start.z == 1 || settled.any { other -> isSupporting(other, brick) }
 
@@ -30,10 +31,15 @@ class Day22(input: List<String>) {
             }
             settled.add(b)
             next.add(b)
+            if (b != brick) moved++
         }
 
-        return next
+        return Pair(next, moved)
     }
 
-    fun solvePart1() = bricks.count { canDisintegrate(it) }
+    fun solvePart1() = bricks.count { !supportsOtherBricks(it) }
+
+    fun solvePart2() = bricks.filter { supportsOtherBricks(it) }.sumOf { supportingBrick ->
+        makeThemFall(bricks.filter { it != supportingBrick }).second
+    }
 }
