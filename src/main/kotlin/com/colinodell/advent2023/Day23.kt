@@ -16,6 +16,41 @@ class Day23(input: List<String>) {
     }
 
     private fun isTrail(pos: Vector2) = pos in region && trails[pos] != '#'
+    private fun isFork(pos: Vector2) = isTrail(pos) && pos.neighbors().count { isTrail(it) } > 2
+
+    private fun findForks() = buildSet {
+        add(start)
+        addAll(trails.keys.filter { isFork(it) })
+        add(end)
+    }
+
+    private fun findDistancesBetweenForks(forks: Set<Vector2>): Map<Vector2, Map<Vector2, Int>> {
+        val ret = forks.associateWith { mutableMapOf<Vector2, Int>() }
+
+        for (fork in forks) {
+            var positions = setOf(fork)
+            val visited = mutableSetOf(fork)
+            var distance = 0
+
+            while (positions.isNotEmpty()) {
+                distance++
+                positions = buildSet {
+                    positions.forEach { p ->
+                        p.neighbors().filter { isTrail(it) && it !in visited }.forEach { n ->
+                            visited.add(n)
+                            if (n in forks) {
+                                ret[fork]!![n] = distance
+                            } else {
+                                add(n)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return ret
+    }
 
     private fun <State> findLongestPathLength(
         start: State,
@@ -41,4 +76,14 @@ class Day23(input: List<String>) {
         reachedEnd = { it == end },
         nextStates = { pos -> getNeighborsConsideringSlopes(pos).filter { isTrail(it) }.associateWith { 1 } },
     )
+
+    fun solvePart2(): Int {
+        val simplified = findDistancesBetweenForks(findForks())
+
+        return findLongestPathLength(
+            start = start,
+            reachedEnd = { it == end },
+            nextStates = { pos -> simplified[pos]!! },
+        )
+    }
 }
