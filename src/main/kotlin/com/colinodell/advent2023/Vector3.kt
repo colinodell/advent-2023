@@ -5,6 +5,9 @@ data class Vector3(val x: Int, val y: Int, val z: Int) {
     operator fun minus(other: Vector3) = Vector3(x - other.x, y - other.y, z - other.z)
 }
 
+data class Vector3L(val x: Long, val y: Long, val z: Long)
+data class Vector3D(val x: Double, val y: Double, val z: Double)
+
 data class Cuboid(val start: Vector3, val end: Vector3) {
     init {
         require(start.x <= end.x)

@@ -102,3 +102,12 @@ fun Iterable<IntRange>.subtract(range: IntRange): Collection<IntRange> {
         }
     }
 }
+
+fun <T> Collection<T>.permutations() = buildList<Pair<T, T>> {
+    val p = this@permutations
+    for (i in p.indices) {
+        for (j in i + 1 until p.size) {
+            add(p.elementAt(i) to p.elementAt(j))
+        }
+    }
+}
