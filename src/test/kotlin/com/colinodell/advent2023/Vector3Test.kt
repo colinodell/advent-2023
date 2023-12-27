@@ -29,6 +29,18 @@ class Vector3Test {
         assertThat(vector.y).isEqualTo(4)
         assertThat(vector.z).isEqualTo(5)
     }
+
+    @Test
+    fun `Neighbors`() {
+        val neighbors = Vector3(1, 2, 3).neighbors()
+        assertThat(neighbors).hasSize(6)
+        assertThat(neighbors).contains(Vector3(0, 2, 3))
+        assertThat(neighbors).contains(Vector3(2, 2, 3))
+        assertThat(neighbors).contains(Vector3(1, 1, 3))
+        assertThat(neighbors).contains(Vector3(1, 3, 3))
+        assertThat(neighbors).contains(Vector3(1, 2, 2))
+        assertThat(neighbors).contains(Vector3(1, 2, 4))
+    }
 }
 
 @DisplayName("Cuboid")
@@ -74,5 +86,16 @@ class CuboidTest {
         assertThat(cuboid.intersects(Cuboid(Vector3(0, 0, 0), Vector3(3, 3, 3)))).isTrue
         assertThat(cuboid.intersects(Cuboid(Vector3(0, 0, 0), Vector3(0, 0, 3)))).isFalse
         assertThat(cuboid.intersects(Cuboid(Vector3(3, 3, 3), Vector3(4, 4, 4)))).isFalse
+    }
+
+    @Test
+    fun `Contains`() {
+        val cuboid = Cuboid(Vector3(1, 2, 3), Vector3(4, 5, 6))
+        assertThat(cuboid.contains(Vector3(1, 2, 3))).isTrue
+        assertThat(cuboid.contains(Vector3(4, 5, 6))).isTrue
+        assertThat(cuboid.contains(Vector3(2, 3, 4))).isTrue
+        assertThat(cuboid.contains(Vector3(0, 2, 3))).isFalse
+        assertThat(cuboid.contains(Vector3(1, 1, 3))).isFalse
+        assertThat(cuboid.contains(Vector3(1, 2, 2))).isFalse
     }
 }

@@ -6,6 +6,24 @@ import org.junit.jupiter.api.Test
 
 class ExtensionsTest {
     @Nested
+    inner class CountUntilTests {
+        @Test
+        fun `returns 0 given an empty input`() {
+            Assertions.assertThat(sequenceOf<Int>().countUntil { false }).isEqualTo(0)
+        }
+
+        @Test
+        fun `counts all items if predicate always returns false`() {
+            Assertions.assertThat(sequenceOf(1, 2, 3).countUntil { false }).isEqualTo(3)
+        }
+
+        @Test
+        fun `counts all items through the first match`() {
+            Assertions.assertThat(sequenceOf(1, 2, 3).countUntil { it == 2 }).isEqualTo(2)
+        }
+    }
+
+    @Nested
     inner class ProductOfTests {
         @Test
         fun `returns 1 given an empty input`() {
@@ -74,6 +92,24 @@ class ExtensionsTest {
         @Test
         fun `Collection lcm()`() {
             Assertions.assertThat(listOf(12L, 18L, 24L).lcm()).isEqualTo(72)
+        }
+    }
+
+    @Nested
+    inner class IterableIntRangeSimplifyTests {
+        @Test
+        fun `no overlap`() {
+            Assertions.assertThat(listOf(1..3, 5..7).simplify()).containsExactly(1..3, 5..7)
+        }
+
+        @Test
+        fun `some overlap`() {
+            Assertions.assertThat(listOf(1..4, 3..7, 9..10).simplify()).containsExactly(1..7, 9..10)
+        }
+
+        @Test
+        fun `full overlap`() {
+            Assertions.assertThat(listOf(1..4, 2..3, 3..7, 6..10).simplify()).containsExactly(1..10)
         }
     }
 

@@ -15,11 +15,27 @@ fun <T> Iterable<T>.chunkedBy(separator: (T) -> Boolean): List<List<T>> =
     }
 
 fun <T> T?.default(default: T) = this ?: default
+fun <T> Iterable<T>.firstOr(default: T) = firstOrNull() ?: default
+
+/**
+ * Counts through the first matching element.
+ */
+fun <T> Sequence<T>.countUntil(predicate: (T) -> Boolean): Int {
+    var count = 0
+    for (t in this@countUntil) {
+        count++
+        if (predicate(t)) {
+            break
+        }
+    }
+    return count
+}
 
 inline fun <T> Iterable<T>.productOf(predicate: (T) -> Long): Long = fold(1L) { acc, t -> acc * predicate(t) }
 
 fun Int.clamp(min: Int, max: Int) = maxOf(min, minOf(max, this))
 fun Long.clamp(min: Long, max: Long) = maxOf(min, minOf(max, this))
+fun Double.clamp(min: Double, max: Double) = maxOf(min, minOf(max, this))
 fun Int.pow(n: Int) = toDouble().pow(n).toInt()
 fun Int.safeMod(other: Int) = ((this % other) + other) % other
 
@@ -73,6 +89,31 @@ fun <T : Comparable<T>> Iterable<T>.compareTo(other: Iterable<T>): Int {
 fun <T> List<T>.asRepeatedSequence() = generateSequence(0) { (it + 1) % this.size }.map(::get)
 
 val IntRange.size get() = endInclusive - start + 1
+
+/**
+ * Returns a new list with the ranges condensed into the smallest possible set of ranges.
+ *
+ * For example, given the ranges [4..6, 1..3, 7..9], this will return [1..9].
+ */
+fun Iterable<IntRange>.simplify(): List<IntRange> {
+    val sortedRanges = sortedBy { it.first }
+    val nonOverlappingRanges = mutableListOf<IntRange>()
+
+    for (range in sortedRanges) {
+        if (nonOverlappingRanges.isEmpty()) {
+            nonOverlappingRanges.add(range)
+        } else {
+            val lastRange = nonOverlappingRanges.last()
+            if (lastRange.last >= range.first) {
+                nonOverlappingRanges[nonOverlappingRanges.lastIndex] = lastRange.first..max(lastRange.last, range.last)
+            } else {
+                nonOverlappingRanges.add(range)
+            }
+        }
+    }
+
+    return nonOverlappingRanges
+}
 
 fun Iterable<IntRange>.intersect(range: IntRange): Collection<IntRange> {
     return buildList {
