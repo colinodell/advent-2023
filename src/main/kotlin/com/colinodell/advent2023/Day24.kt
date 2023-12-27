@@ -44,8 +44,48 @@ class Day24(input: List<String>) {
         }
     }
 
+    private fun findPossibleVelocities(a: MovingObject, b: MovingObject, dimension: (Vector3L) -> Long) = buildSet {
+        if (dimension(a.vel) != dimension(b.vel)) {
+            return emptySet<Long>()
+        }
+
+        val diff = dimension(b.pos) - dimension(a.pos)
+        for (v in -1000L..1000L) {
+            if (v == dimension(a.vel)) {
+                continue
+            }
+            if (diff % (v - dimension(a.vel)) == 0L) {
+                add(v)
+            }
+        }
+    }
+
     fun solvePart1(min: Long, max: Long) = hailstones
         .permutations()
         .map { it.first.findXYIntersection(it.second) }
         .count { it.crossesInFuture && it.point!!.x > min && it.point.x < max && it.point.y > min && it.point.y < max }
+
+    fun solvePart2(): Long {
+        // Find the only possible velocity for each dimension
+        val rvx = hailstones.permutations().map { (a, b) -> findPossibleVelocities(a, b, Vector3L::x) }.filter { it.isNotEmpty() }.reduce { acc, set -> acc.intersect(set) }.first()
+        val rvy = hailstones.permutations().map { (a, b) -> findPossibleVelocities(a, b, Vector3L::y) }.filter { it.isNotEmpty() }.reduce { acc, set -> acc.intersect(set) }.first()
+        val rvz = hailstones.permutations().map { (a, b) -> findPossibleVelocities(a, b, Vector3L::z) }.filter { it.isNotEmpty() }.reduce { acc, set -> acc.intersect(set) }.first()
+
+        // Solve for the line needed to intersect at that velocity so we can determine the start position
+        val (apx, apy, apz) = hailstones[0].pos
+        val (avx, avy, avz) = hailstones[0].vel
+        val (bpx, bpy, _) = hailstones[1].pos
+        val (bvx, bvy, _) = hailstones[1].vel
+
+        // Math based on https://github.com/githuib/AdventOfCode/blob/master/aoc/year2023/day24.py#L73
+        val m1 = (avy - rvy).toDouble() / (avx - rvx).toDouble()
+        val m2 = (bvy - rvy).toDouble() / (bvx - rvx).toDouble()
+        val rpx = (((bpy - (m2 * bpx)) - (apy - (m1 * apx))) / (m1 - m2)).toLong()
+        val t = (rpx - apx) / (avx - rvx)
+
+        val rpy = (apy + (avy - rvy) * t)
+        val rpz = (apz + (avz - rvz) * t)
+
+        return rpx + rpy + rpz
+    }
 }
