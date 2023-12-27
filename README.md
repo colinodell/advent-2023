@@ -15,4 +15,5 @@ Past years, in other languages:
  * [2022 - Kotlin](https://github.com/colinodell/advent-2022)
 
 All solutions in this repository are originals unless otherwise noted
+
 Copyright &copy; 2023 by Colin O'Dell.
