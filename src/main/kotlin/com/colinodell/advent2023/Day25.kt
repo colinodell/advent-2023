@@ -12,67 +12,15 @@ class Day25(input: List<String>) {
         }
         .groupBy({ it.first }, { it.second })
 
-    private fun disconnect(conns: Map<String, List<String>>, a: String, b: String): Map<String, List<String>> {
-        val conns = conns.toMutableMap()
-        conns[a] = conns[a]?.filter { it != b } ?: emptyList()
-        conns[b] = conns[b]?.filter { it != a } ?: emptyList()
+    fun solvePart1(): Int {
+        // Based on https://www.reddit.com/r/adventofcode/comments/18qbsxs/comment/ketzp94
+        val nodes = connections.keys.toMutableSet()
+        val count = { v: String -> connections[v]!!.filter { !nodes.contains(it) }.size }
 
-        return conns
+        while (nodes.sumOf { count(it) } != 3) {
+            nodes.remove(nodes.maxByOrNull(count))
+        }
+
+        return nodes.size * (connections.keys.toSet() - nodes).size
     }
-
-    private fun getGroups(conns: Map<String, List<String>>): List<Set<String>> {
-        val visited = mutableSetOf<String>()
-        val groups = mutableListOf<Set<String>>()
-
-        for (component in conns.keys) {
-            if (visited.contains(component)) {
-                continue
-            }
-
-            val group = mutableSetOf<String>()
-            groups.add(group)
-            val queue = mutableListOf(component)
-            while (queue.isNotEmpty()) {
-                val current = queue.removeAt(0)
-                if (visited.contains(current)) {
-                    continue
-                }
-                visited.add(current)
-                group.add(current)
-                queue.addAll(conns[current] ?: emptyList())
-            }
-        }
-
-        return groups
-    }
-
-    // Figure out which three pairs of wires we need to disconnect so that
-    // we're left with exactly 2 groups of wires. Return the product of the
-    // sizes of those two groups.
-    private fun bruteForce(conns: Map<String, List<String>>, cutsMade: Int = 0): Int {
-        if (cutsMade > 3) {
-            return -1
-        }
-
-        val groups = getGroups(conns)
-        if (groups.size == 2) {
-            return groups.fold(1) { acc, group ->
-                acc * group.size
-            }
-        }
-
-        for (a in conns.keys.toList().shuffled()) {
-            for (b in conns[a]?.shuffled() ?: emptyList()) {
-                val newConns = disconnect(conns, a, b)
-                val result = bruteForce(newConns, cutsMade + 1)
-                if (result != -1) {
-                    return result
-                }
-            }
-        }
-
-        return -1
-    }
-
-    fun solvePart1() = bruteForce(connections)
 }
